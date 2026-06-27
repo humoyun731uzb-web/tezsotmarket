@@ -108,6 +108,32 @@ VAPID_PUBLIC_KEY = os.getenv('VAPID_PUBLIC_KEY', 'BAb5pImx1BigYQdLual6dKfJe2bP2E
 VAPID_PRIVATE_KEY = os.getenv('VAPID_PRIVATE_KEY', '1wEMYYaMz0CpLiEsi4tnpM4gtiRBp1pgTMS4RZv9kDY')
 VAPID_CLAIMS = {"sub": "mailto:admin@tezsot.uz"}
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'ERROR',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
+}
+
 # PASSWORD VALIDATORS
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', 'OPTIONS': {'min_length': 8}},
