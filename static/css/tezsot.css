@@ -406,6 +406,44 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
   .card-product .info .price { font-size: 0.95rem; }
 }
 
+/* ========== ANIMATIONS ========== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.animate-fade-in { animation: fadeInUp 0.4s ease forwards; }
+.animate-pulse { animation: pulse 2s ease-in-out infinite; }
+
+/* ========== TOUCH FEEDBACK ========== */
+.touch-feedback { transition: transform 0.15s ease; }
+.touch-feedback:active { transform: scale(0.97); }
+
+/* ========== MOBILE SAFE AREA ========== */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .sticky-header { padding-top: env(safe-area-inset-top); }
+  .mobile-bottom-nav { padding-bottom: env(safe-area-inset-bottom); }
+}
+
+/* ========== PRODUCT CARD IMPROVEMENTS ========== */
+.product-card { animation: fadeInUp 0.35s ease forwards; }
+.product-card:nth-child(2) { animation-delay: 0.05s; }
+.product-card:nth-child(3) { animation-delay: 0.1s; }
+.product-card:nth-child(4) { animation-delay: 0.15s; }
+.product-card:nth-child(5) { animation-delay: 0.2s; }
+.product-card:nth-child(6) { animation-delay: 0.25s; }
+
+/* ========== GRID GAP CONSISTENCY ========== */
+@media (max-width: 380px) {
+  .grid-products { gap: 8px; }
+}
+@media (min-width: 381px) and (max-width: 639px) {
+  .grid-products { gap: 10px; }
+}
+
 /* ========== SKELETON LOADING ========== */
 .skeleton {
   background: linear-gradient(90deg, var(--border-light) 25%, #e2e8f0 50%, var(--border-light) 75%);

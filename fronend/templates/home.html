@@ -27,19 +27,6 @@
       --regular-gradient: linear-gradient(135deg, #3b82f6, #2563eb);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: system-ui, -apple-system, 'Inter', 'Segoe UI', sans-serif;
-      background: var(--bg-light);
-      color: var(--text-dark);
-      line-height: 1.5;
-    }
-
     /* Container */
     .products-container {
       max-width: 1400px;
@@ -591,8 +578,10 @@
           <div class="product-price">{{ product.narx_formatted|default:product.narx }}</div>
           <h3 class="product-name">{{ product.name|truncatechars:45 }}</h3>
           <div class="product-category"><i class="fas fa-tag text-[9px]"></i> {{ product.mahsulotturi|default:"Mahsulot"|truncatechars:18 }}</div>
-          <div class="product-location"><i class="fas fa-map-marker-alt text-[9px]"></i> {{ product.shaxr|default:"Toshkent"|truncatechars:20 }}</div>
-          <div class="product-time"><i class="far fa-clock text-[9px]"></i> {{ product.date|default:"Yangi" }}</div>
+          <div class="product-details">
+            <div class="product-location"><i class="fas fa-map-marker-alt text-[9px]"></i> {{ product.get_viloyat_display|default:"Toshkent"|truncatechars:20 }}</div>
+            <div class="product-date"><i class="far fa-clock text-[9px]"></i> {{ product.sana|date:"d.m.Y"|default:"Yangi" }}</div>
+          </div>
         </a>
       </div>
       {% endfor %}

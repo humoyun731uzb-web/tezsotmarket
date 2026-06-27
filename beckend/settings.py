@@ -102,9 +102,23 @@ STORAGES = {
     },
 }
 
+# WhiteNoise - static fayllarni samarali serving qilish
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_MANIFEST_STRICT = False
+WHITENOISE_ALLOW_ALL_ORIGINS = True
+
 # MEDIA FILES
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Foydalanuvchi yuklagan media fayllarni ham WhiteNoise orqali serving qilish
+import mimetypes
+mimetypes.add_type("application/javascript", ".js", True)
+mimetypes.add_type("text/css", ".css", True)
+mimetypes.add_type("image/png", ".png", True)
+mimetypes.add_type("image/jpeg", ".jpg", True)
+mimetypes.add_type("image/webp", ".webp", True)
+mimetypes.add_type("image/svg+xml", ".svg", True)
 
 # VAPID PUSH NOTIFICATIONS
 VAPID_PUBLIC_KEY = os.getenv('VAPID_PUBLIC_KEY', 'BAb5pImx1BigYQdLual6dKfJe2bP2EVzSBX6a1PCPyb-66DmHKhm3UMuWOHqsZ0v3WxkU9FLyZG2J2q5YPHzozE')
