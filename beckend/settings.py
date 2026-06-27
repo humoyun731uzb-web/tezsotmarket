@@ -17,7 +17,10 @@ if env_path.exists():
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 if not SECRET_KEY:
-    raise RuntimeError("DJANGO_SECRET_KEY environment variable is required!")
+    if DEBUG:
+        SECRET_KEY = 'dev-secret-key-do-not-use-in-production'
+    else:
+        raise RuntimeError("DJANGO_SECRET_KEY environment variable is required!")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
