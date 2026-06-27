@@ -1,10 +1,15 @@
 {% load static %}
 
+<style>
+    @media (max-width: 480px) {
+        .footer-logo { height: 36px !important; }
+    }
+</style>
 <footer class="site-footer">
     <div class="container">
         <div class="footer-grid">
             <div class="footer-col">
-                <img style="height:50px; margin-bottom:16px;" src="{% static 'img/logo-1.png' %}" alt="Tez Sot">
+                <img class="footer-logo" style="height:50px; margin-bottom:16px;" src="{% static 'img/logo-1.png' %}" alt="Tez Sot">
                 <p>Eng sifatli mahsulotlar va tez yetkazib berish xizmati.</p>
             </div>
 
