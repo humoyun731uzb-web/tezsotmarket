@@ -25,9 +25,9 @@ if not SECRET_KEY:
     else:
         raise RuntimeError("DJANGO_SECRET_KEY environment variable is required!")
 
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'web-production-5a6ab.up.railway.app').split(',')
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'tezsotmarket-production.up.railway.app,.railway.app,localhost').split(',')
 
-CSRF_TRUSTED_ORIGINS = os.getenv('DJANGO_CSRF_TRUSTED_ORIGINS', 'https://web-production-5a6ab.up.railway.app').split(',')
+CSRF_TRUSTED_ORIGINS = os.getenv('DJANGO_CSRF_TRUSTED_ORIGINS', 'https://tezsotmarket-production.up.railway.app').split(',')
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
