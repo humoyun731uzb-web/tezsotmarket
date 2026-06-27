@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('fronend', '0034_remove_payment_confirmed_by_and_more'),
+        ('fronend', '0033_merge_20260123_2328'),
     ]
 
     operations = [
@@ -29,6 +29,11 @@ class Migration(migrations.Migration):
             model_name='premiumrequest',
             name='transaction_id',
             field=models.CharField(blank=True, max_length=100, null=True, verbose_name='Tranzaksiya ID'),
+        ),
+        migrations.AddField(
+            model_name='premiumrequest',
+            name='payment_amount',
+            field=models.DecimalField(decimal_places=2, default=0.0, max_digits=12, verbose_name="To'lov summasi"),
         ),
         migrations.AddIndex(
             model_name='premiumrequest',

@@ -446,10 +446,6 @@ class PremiumNotificationAdmin(admin.ModelAdmin):
         self.message_user(request, f"{count} ta bildirishnoma o'qilmagan qilindi")
     mark_as_unread.short_description = "Tanlangan bildirishnomalarni o'qilmagan qilish"
 
-from django.contrib import admin
-from django.utils.html import format_html
-import json
-
 @admin.register(AdminPremiumSettings)
 class AdminPremiumSettingsAdmin(admin.ModelAdmin):
     """Premium sozlamalar"""

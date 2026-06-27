@@ -183,3 +183,14 @@ class SearchService:
                 suggestions.add(product.name)
         
         return list(suggestions)[:5]
+    
+    @classmethod
+    def search_with_suggestions(cls, query):
+        """Qidiruv natijalari va takliflar bilan qaytarish"""
+        results = cls.fuzzy_search(query)
+        suggestions = cls.get_suggestions(query)
+        
+        return {
+            'results': results,
+            'suggestions': suggestions,
+        }

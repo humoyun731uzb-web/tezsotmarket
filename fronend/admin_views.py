@@ -10,7 +10,7 @@ from django.urls import reverse
 from datetime import timedelta
 
 from .models import (
-    Mahsulot, Sevimli, Banner, SellerProfile, PremiumUser, 
+    Mahsulot, Sevimli, Banner, PageBanner, SellerProfile, PremiumUser, 
     PremiumProduct, AdminPremiumSettings, AdminAloqa, 
     PremiumRequest, PremiumNotification, Category, SotibOlish,
     BannerPurchase, FeaturedPurchase, Chat, Message

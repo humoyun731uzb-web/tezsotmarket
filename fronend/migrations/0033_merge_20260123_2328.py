@@ -6,7 +6,6 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('fronend', '0030_adminpremiumsettings_daily_payment_explanation_and_more'),
         ('fronend', '0032_adminpremiumsettings_max_premium_requests_per_user'),
     ]
 

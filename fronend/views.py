@@ -194,7 +194,6 @@ def check_and_update_premium_expiry():
         return None
 
 # ==================== ASOSIY SAHIFALAR ====================
-from .models import AdminAloqa
 
 def home_view(request):
     """Bosh sahifa"""
@@ -1046,7 +1045,6 @@ def my_premium_requests_view(request):
         return redirect('my_profile')
 
 @login_required
-@login_required
 def cancel_premium_request_view(request, request_id):
     """Premium so'rovni bekor qilish"""
     try:
@@ -1302,7 +1300,6 @@ def update_password(request):
 
 @login_required
 @require_POST
-@login_required
 def update_notifications(request):
     try:
         data = json.loads(request.body)
@@ -1947,18 +1944,11 @@ def admin_update_premium_settings(request):
         settings.require_admin_approval = request.POST.get('require_admin_approval') == 'on'
         settings.auto_approve_premium = request.POST.get('auto_approve_premium') == 'on'
         
-        # Design
-        settings.premium_badge_color = request.POST.get('premium_badge_color', '#FFD700')
-        
         # Premium cheklovlari
-        settings.can_reactivate_old = request.POST.get('can_reactivate_old') == 'on'
-        settings.check_expiry_every_hours = int(request.POST.get('check_expiry_every_hours', 1))
         settings.notify_before_days = int(request.POST.get('notify_before_days', 3))
         
         # So'rov sozlamalari
         settings.premium_request_expiry_days = int(request.POST.get('premium_request_expiry_days', 7))
-        settings.auto_check_expiry = request.POST.get('auto_check_expiry') == 'on'
-        settings.send_notifications = request.POST.get('send_notifications') == 'on'
         settings.max_premium_requests_per_user = int(request.POST.get('max_premium_requests_per_user', 3))
         
         settings.save()
