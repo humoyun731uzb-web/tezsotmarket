@@ -4,7 +4,7 @@
     "buildCommand": "python manage.py collectstatic --noinput"
   },
   "deploy": {
-    "preDeployCommand": "python predeploy.py && python manage.py migrate --noinput",
+    "preDeployCommand": "python manage.py migrate --noinput",
     "startCommand": "gunicorn beckend.wsgi:application --bind 0.0.0.0:$PORT --workers 4"
   }
 }
