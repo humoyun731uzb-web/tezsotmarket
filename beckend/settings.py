@@ -22,7 +22,7 @@ if not SECRET_KEY:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['https://web-production-5a6ab.up.railway.app']
+ALLOWED_HOSTS = ['web-production-5a6ab.up.railway.app']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
