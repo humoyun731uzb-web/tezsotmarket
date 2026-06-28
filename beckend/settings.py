@@ -109,7 +109,7 @@ WHITENOISE_ALLOW_ALL_ORIGINS = True
 
 # MEDIA FILES
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.getenv('MEDIA_ROOT_PATH', str(BASE_DIR / 'media'))
 
 # Foydalanuvchi yuklagan media fayllarni ham WhiteNoise orqali serving qilish
 import mimetypes
