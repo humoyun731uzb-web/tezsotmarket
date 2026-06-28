@@ -361,6 +361,7 @@ def buy_premium_view(request):
 # =============================================================================
 
 @login_required
+@login_required
 def buy_banner_view(request):
     """Banner joyini sotib olish"""
     settings = AdminPremiumSettings.get_settings()
