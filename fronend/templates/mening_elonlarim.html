@@ -1470,19 +1470,84 @@
     </div>
 
     <script>
-        // ===== PWA beforeinstallprompt - top level =====
+        // ===== PWA beforeinstallprompt & Global functions =====
         var deferredPrompt = null;
         window.addEventListener('beforeinstallprompt', function(e) {
             e.preventDefault();
             deferredPrompt = e;
-            var pwaDismissed = localStorage.getItem('tezsot_pwa_dismissed') === 'true';
-            var isPwaInstalled = window.matchMedia('(display-mode: standalone)').matches ||
-                                 window.navigator.standalone || false;
-            if (!pwaDismissed && !isPwaInstalled) {
-                var banner = document.getElementById('pwaBanner');
-                if (banner) banner.style.display = 'block';
-            }
+            showPwaBanner();
         });
+
+        function showPwaBanner() {
+            var b = document.getElementById('pwaBanner');
+            if (!b) return;
+            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+                b.style.display = 'none';
+                return;
+            }
+            if (localStorage.getItem('tezsot_pwa_dismissed') === 'true') {
+                b.style.display = 'none';
+                return;
+            }
+            b.style.display = 'block';
+        }
+
+        function updatePwaSteps(isIOS) {
+            var s1 = document.getElementById('step1Title');
+            var d1 = document.getElementById('step1Desc');
+            var s2 = document.getElementById('step2Title');
+            var d2 = document.getElementById('step2Desc');
+            var s3 = document.getElementById('step3Title');
+            var d3 = document.getElementById('step3Desc');
+            if (!s1) return;
+            if (isIOS) {
+                s1.textContent = 'Safari\'da Share tugmasini bosing';
+                d1.textContent = 'Pastki qismdagi kvadrat ichida yuqoriga strelka (\u2191) ko\'rinishidagi Share tugmasini bosing';
+                s2.textContent = '"Asosiy ekranga qo\'shish"ni tanlang';
+                d2.textContent = 'Pastga siljiting va "Add to Home Screen" (Asosiy ekranga qo\'shish) tugmasini bosing';
+                s3.textContent = '"Add" tugmasini bosing';
+                d3.textContent = 'Yuqori o\'ng burchakdagi "Add" (Qo\'shish) tugmasini bosing. Ilova ekranda paydo bo\'ladi';
+            } else {
+                s1.textContent = 'Brauzer menyusini oching';
+                d1.textContent = 'Chrome brauzeringizning yuqori o\'ng burchagidagi \u22EE (uch nuqta) tugmasini bosing';
+                s2.textContent = '"Ilovani o\'rnatish" ni tanlang';
+                d2.textContent = '"Install App" yoki "Add to Home Screen" tugmasini bosing';
+                s3.textContent = '"O\'rnatish" tugmasini bosing';
+                d3.textContent = 'Ilova telefoningizga o\'rnatiladi va ish stolida paydo bo\'ladi';
+            }
+        }
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(function(choice) {
+                    deferredPrompt = null;
+                    document.getElementById('pwaBanner').style.display = 'none';
+                });
+            } else {
+                var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+                updatePwaSteps(isIOS);
+                var modalBtn = document.querySelector('#pwaModal .pwa-modal-install-btn');
+                if (modalBtn) {
+                    modalBtn.textContent = 'Tushundim';
+                    modalBtn.onclick = closePwaModal;
+                }
+                document.getElementById('pwaOverlay').style.display = 'block';
+                document.getElementById('pwaModal').style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function dismissPwaBanner() {
+            document.getElementById('pwaBanner').style.display = 'none';
+            localStorage.setItem('tezsot_pwa_dismissed', 'true');
+        }
+
+        function closePwaModal() {
+            document.getElementById('pwaOverlay').style.display = 'none';
+            document.getElementById('pwaModal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
 
         document.addEventListener('DOMContentLoaded', function() {
             // SIDEBAR TOGGLE
@@ -1680,100 +1745,28 @@
                 subscribePush();
             }
 
-            // ===== PWA Install =====
-            var isPwaInstalled = window.matchMedia('(display-mode: standalone)').matches ||
-                                 window.navigator.standalone || false;
-            var pwaDismissed = localStorage.getItem('tezsot_pwa_dismissed') === 'true';
-
-            if (isPwaInstalled) {
-                var bannerEl = document.getElementById('pwaBanner');
-                if (bannerEl) bannerEl.style.display = 'none';
-            } else if (!pwaDismissed) {
-                var bannerEl = document.getElementById('pwaBanner');
-                if (bannerEl) bannerEl.style.display = 'block';
-            }
+            // ===== PWA Install init =====
+            showPwaBanner();
 
             window.addEventListener('appinstalled', function() {
                 deferredPrompt = null;
                 document.getElementById('pwaBanner').style.display = 'none';
                 closePwaModal();
-                isPwaInstalled = true;
             });
 
-            function updatePwaSteps(isIOS) {
-                var s1 = document.getElementById('step1Title');
-                var d1 = document.getElementById('step1Desc');
-                var s2 = document.getElementById('step2Title');
-                var d2 = document.getElementById('step2Desc');
-                var s3 = document.getElementById('step3Title');
-                var d3 = document.getElementById('step3Desc');
-                if (isIOS) {
-                    s1.textContent = 'Safari\'da Share tugmasini bosing';
-                    d1.textContent = 'Pastki qismdagi kvadrat ichida yuqoriga strelka (↑) ko\'rinishidagi Share tugmasini bosing';
-                    s2.textContent = '"Asosiy ekranga qo\'shish"ni tanlang';
-                    d2.textContent = 'Pastga siljiting va "Add to Home Screen" (Asosiy ekranga qo\'shish) tugmasini bosing';
-                    s3.textContent = '"Add" tugmasini bosing';
-                    d3.textContent = 'Yuqori o\'ng burchakdagi "Add" (Qo\'shish) tugmasini bosing. Ilova ekranda paydo bo\'ladi';
-                } else {
-                    s1.textContent = 'Brauzer menyusini oching';
-                    d1.textContent = 'Chrome brauzeringizning yuqori o\'ng burchagidagi ⋮ (uch nuqta) tugmasini bosing';
-                    s2.textContent = '"Ilovani o\'rnatish" ni tanlang';
-                    d2.textContent = '"Install App" yoki "Add to Home Screen" tugmasini bosing';
-                    s3.textContent = '"O\'rnatish" tugmasini bosing';
-                    d3.textContent = 'Ilova telefoningizga o\'rnatiladi va ish stolida paydo bo\'ladi';
-                }
-            }
-
-            function installApp() {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    deferredPrompt.userChoice.then(function(choice) {
-                        if (choice.outcome === 'accepted') {
-                            console.log('User accepted the install prompt');
-                        }
-                        deferredPrompt = null;
-                        document.getElementById('pwaBanner').style.display = 'none';
-                    });
-                } else {
-                    var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-                    updatePwaSteps(isIOS);
-                    var modalBtn = document.querySelector('#pwaModal .pwa-modal-install-btn');
-                    if (modalBtn) {
-                        modalBtn.textContent = 'Tushundim';
-                        modalBtn.onclick = closePwaModal;
-                    }
-                    document.getElementById('pwaOverlay').style.display = 'block';
-                    document.getElementById('pwaModal').style.display = 'block';
-                    document.body.style.overflow = 'hidden';
-                }
-            }
-
-            function dismissPwaBanner() {
-                document.getElementById('pwaBanner').style.display = 'none';
-                localStorage.setItem('tezsot_pwa_dismissed', 'true');
-                pwaDismissed = true;
-            }
-
-            function closePwaModal() {
-                document.getElementById('pwaOverlay').style.display = 'none';
-                document.getElementById('pwaModal').style.display = 'none';
-                document.body.style.overflow = '';
-            }
-
-            window.installApp = installApp;
-            window.dismissPwaBanner = dismissPwaBanner;
-            window.closePwaModal = closePwaModal;
-
-            // iOS safari / brauzerlar - qo'llanma ko'rsatish
             var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
             var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-
-            if (!isPwaInstalled && !pwaDismissed && (isIOS || isSafari)) {
-                setTimeout(function() {
-                    document.getElementById('pwaOverlay').style.display = 'block';
-                    document.getElementById('pwaModal').style.display = 'block';
-                    document.body.style.overflow = 'hidden';
-                }, 6000);
+            if (isIOS || isSafari) {
+                var b = document.getElementById('pwaBanner');
+                if (b && b.style.display !== 'none') {
+                    setTimeout(function() {
+                        if (!localStorage.getItem('tezsot_pwa_dismissed')) {
+                            document.getElementById('pwaOverlay').style.display = 'block';
+                            document.getElementById('pwaModal').style.display = 'block';
+                            document.body.style.overflow = 'hidden';
+                        }
+                    }, 6000);
+                }
             }
 
             // ===== Umumiy bildirishnomalar (barcha sahifalarda) =====

@@ -19,7 +19,7 @@
       "purpose": "any maskable"
     },
     {
-      "src": "/static/img/logo-1.png",
+      "src": "/static/img/logo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -27,7 +27,7 @@
   ],
   "screenshots": [
     {
-      "src": "/static/img/logo-1.png",
+      "src": "/static/img/logo.png",
       "sizes": "512x512",
       "type": "image/png",
       "form_factor": "narrow",

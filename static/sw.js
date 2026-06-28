@@ -9,8 +9,8 @@ self.addEventListener('install', e => {
       return cache.addAll([
         '/static/css/tezsot.css',
         '/static/manifest.json',
-        '/static/img/logo-1.png',
-        '/static/img/iconlogo192.png',
+        '/static/img/logo.png',
+        '/static/img/logo.png',
       ]).catch(() => {});
     })
   );
