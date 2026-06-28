@@ -1609,7 +1609,7 @@
 
             // ===== PWA Service Worker =====
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/sw.js/', {scope: '/'}).catch(function(err) {
+                navigator.serviceWorker.register('/sw.js', {scope: '/'}).catch(function(err) {
                     console.warn('SW ro\'yxatdan o\'tmadi:', err);
                 });
             }
