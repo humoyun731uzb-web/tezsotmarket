@@ -9,8 +9,8 @@ self.addEventListener('install', e => {
       return cache.addAll([
         '/static/css/tezsot.css',
         '/static/manifest.json',
-        '/static/img/logo-1.png',
-        '/static/img/iconlogo.png',
+        '/static/img/splash_logo.png',
+        '/static/img/iconlogo192.png',
       ]).catch(() => {});
     })
   );
@@ -68,7 +68,7 @@ self.addEventListener('fetch', e => {
 });
 
 self.addEventListener('push', e => {
-  let data = { title: 'TezSot', body: 'Yangi xabar', icon: '/static/img/iconlogo.png', badge: '/static/img/iconlogo.png', url: '/' };
+  let data = { title: 'TezSot', body: 'Yangi xabar', icon: '/static/img/iconlogo192.png', badge: '/static/img/iconlogo192.png', url: '/' };
   try {
     if (e.data) data = { ...data, ...e.data.json() };
   } catch (_) { data.body = e.data.text(); }

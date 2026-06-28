@@ -1,6 +1,6 @@
 # urls.py - To'liq to'g'rilangan versiya
 
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 from . import admin_views
 from . import purchase_views
@@ -160,7 +160,7 @@ path('api/search-popular/', views.api_search_popular, name='api_search_popular')
     # Profil qidirish
     path('profil-qidirish/', views.profile_search_view, name='profile_search'),
     path('api/profile-search/', views.api_profile_search, name='api_profile_search'),
-    path('sw.js/', views.service_worker_view, name='service_worker'),
+    re_path(r'^sw\.js$', views.service_worker_view, name='service_worker'),
 
     # Banner boshqaruvi (foydalanuvchi)
     path('mening-bannerlarim/', purchase_views.my_banners_view, name='my_banners'),

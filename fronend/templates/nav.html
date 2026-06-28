@@ -1,6 +1,6 @@
 {% load static %}
 <link rel="manifest" href="{% static 'manifest.json' %}">
-<link rel="apple-touch-icon" href="{% static 'img/iconlogo.png' %}">
+<link rel="apple-touch-icon" href="{% static 'img/iconlogo192.png' %}">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="TezSot">
@@ -654,7 +654,7 @@
 
     <!-- ===== SPLASH SCREEN ===== -->
     <div id="appSplash" aria-hidden="true">
-        <img src="{% static 'img/logo-1.png' %}" alt="TezSot" class="splash-logo" />
+        <img src="{% static 'img/splash_logo.png' %}" alt="TezSot" class="splash-logo" />
         <div class="splash-title">TezSot</div>
         <div class="splash-sub">Eng qulay onlayn bozor</div>
         <div class="splash-loader">
@@ -1074,7 +1074,7 @@
 
             // ===== PWA Service Worker =====
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/sw.js/', {scope: '/'}).catch(function(err) {
+                navigator.serviceWorker.register('/sw.js', {scope: '/'}).catch(function(err) {
                     console.warn('SW ro\'yxatdan o\'tmadi:', err);
                 });
             }
@@ -1275,7 +1275,7 @@
             function showNotif(title, body, url) {
                 if (!('Notification' in window) || Notification.permission !== 'granted') return;
                 try {
-                    var n = new Notification(title, { body: body, icon: '/static/img/iconlogo.png', tag: 'tezsot-global' });
+                    var n = new Notification(title, { body: body, icon: '/static/img/iconlogo192.png', tag: 'tezsot-global' });
                     n.onclick = function() { window.focus(); if (url) window.location.href = url; n.close(); };
                 } catch(e) {}
             }
