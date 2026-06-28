@@ -426,7 +426,7 @@
                         {% endif %}
                         
                         {% if mahsulot.ikkiimg %}
-                        <div class="w-20 h-20 rounded-lg overflow-hidden cursor-pointer thumbImage" 
+                        <div class="w-20 h-20 rounded-lg overflow-hidden cursor-pointer thumb-image" 
                              onclick="changeImage('{{ mahsulot.ikkiimg.url }}', this)">
                             <img src="{{ mahsulot.ikkiimg.url }}" 
                                  alt="2-rasm" 
@@ -435,7 +435,7 @@
                         {% endif %}
                         
                         {% if mahsulot.uchuimg %}
-                        <div class="w-20 h-20 rounded-lg overflow-hidden cursor-pointer thumbImage" 
+                        <div class="w-20 h-20 rounded-lg overflow-hidden cursor-pointer thumb-image" 
                              onclick="changeImage('{{ mahsulot.uchuimg.url }}', this)">
                             <img src="{{ mahsulot.uchuimg.url }}" 
                                  alt="3-rasm" 
@@ -769,30 +769,7 @@
             element.classList.add('active');
         }
         
-        // Auto rotate images if multiple exist
-        let imageIndex = 0;
-        const images = [
-            {% if mahsulot.asosiyimg %}'{{ mahsulot.asosiyimg.url }}',{% endif %}
-            {% if mahsulot.birimg %}'{{ mahsulot.birimg.url }}',{% endif %}
-            {% if mahsulot.ikkiimg %}'{{ mahsulot.ikkiimg.url }}',{% endif %}
-            {% if mahsulot.uchuimg %}'{{ mahsulot.uchuimg.url }}',{% endif %}
-        ];
-        
-        if (images.length > 1) {
-            setInterval(() => {
-                imageIndex = (imageIndex + 1) % images.length;
-                document.getElementById('mainImage').src = images[imageIndex];
-                
-                // Update active thumbnail
-                document.querySelectorAll('.thumb-image').forEach((thumb, index) => {
-                    if (index === imageIndex) {
-                        thumb.classList.add('active');
-                    } else {
-                        thumb.classList.remove('active');
-                    }
-                });
-            }, 5000);
-        }
+
         
         // Premium glow effect
         const premiumProduct = document.querySelector('.premium-product');
