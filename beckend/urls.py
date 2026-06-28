@@ -9,6 +9,10 @@ import os
 import mimetypes
 
 
+def google_verification(request):
+    from django.http import HttpResponse
+    return HttpResponse("google-site-verification: google1a9e14b907f2d5a8.html", content_type="text/html")
+
 def robots_txt(request):
     lines = [
         "User-agent: *",
@@ -102,6 +106,7 @@ handler404 = custom_404
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('google1a9e14b907f2d5a8.html', google_verification),
     path('robots.txt', robots_txt),
     path('sitemap.xml', sitemap_xml),
     path('', include('fronend.urls')),  # asosiy app
