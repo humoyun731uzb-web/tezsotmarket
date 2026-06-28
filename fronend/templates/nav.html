@@ -1044,6 +1044,27 @@
             }
         }
         
+        // ===== PWA beforeinstallprompt - erta ushlash uchun top-level =====
+        var deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', function(e) {
+            e.preventDefault();
+            deferredPrompt = e;
+            var pwaDismissed = localStorage.getItem('tezsot_pwa_dismissed') === 'true';
+            var isPwaInstalled = window.matchMedia('(display-mode: standalone)').matches ||
+                                 window.navigator.standalone || false;
+            if (!pwaDismissed && !isPwaInstalled) {
+                var banner = document.getElementById('pwaBanner');
+                if (banner) banner.style.display = 'block';
+            }
+        });
+
+        // ===== Buzilgan rasmlarni logo-1.png bilan almashtirish =====
+        window.addEventListener('error', function(e) {
+            if (e.target.tagName === 'IMG' && !e.target.src.includes('logo-1.png')) {
+                e.target.src = '/static/img/logo-1.png';
+            }
+        }, true);
+
         // Sahifa yuklanganda
         document.addEventListener('DOMContentLoaded', () => {
             // Desktop qidiruv
@@ -1132,23 +1153,16 @@
             }
 
             // ===== PWA Install =====
-            var deferredPrompt = null;
-            var pwaDismissed = localStorage.getItem('tezsot_pwa_dismissed') === 'true';
             var isPwaInstalled = window.matchMedia('(display-mode: standalone)').matches ||
                                  window.navigator.standalone || false;
+            if (isPwaInstalled) document.getElementById('pwaBanner').style.display = 'none';
 
-            // Show banner immediately on page load if not installed
+            // Show banner if not dismissed - this runs after beforeinstallprompt may have fired already
+            var pwaDismissed = localStorage.getItem('tezsot_pwa_dismissed') === 'true';
             if (!pwaDismissed && !isPwaInstalled) {
-                document.getElementById('pwaBanner').style.display = 'block';
+                var banner = document.getElementById('pwaBanner');
+                if (banner) banner.style.display = 'block';
             }
-
-            window.addEventListener('beforeinstallprompt', function(e) {
-                e.preventDefault();
-                deferredPrompt = e;
-                if (!pwaDismissed && !isPwaInstalled) {
-                    document.getElementById('pwaBanner').style.display = 'block';
-                }
-            });
 
             window.addEventListener('appinstalled', function() {
                 deferredPrompt = null;
