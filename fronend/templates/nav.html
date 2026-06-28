@@ -283,9 +283,9 @@
     pointer-events: none;
 }
 .splash-logo {
-    width: 88px;
-    height: 88px;
-    border-radius: 20px;
+    width: 218px;
+    height: auto;
+    border-radius: 28px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.08);
     margin-bottom: 16px;
     animation: splashLogoAnim 0.8s ease forwards;
@@ -296,7 +296,7 @@
 }
 .splash-title {
     color: #0f172a;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 700;
     letter-spacing: -0.3px;
     margin-bottom: 4px;
@@ -648,13 +648,27 @@
 
     <!-- ===== SPLASH SCREEN ===== -->
     <div id="appSplash" aria-hidden="true">
-        <img src="{% static 'img/splash_logo.png' %}" alt="TezSot" class="splash-logo" />
+        <img src="{% static 'img/logo-1.png' %}" alt="TezSot" class="splash-logo" />
         <div class="splash-title">TezSot</div>
         <div class="splash-sub">Eng qulay onlayn bozor</div>
         <div class="splash-loader">
             <span></span><span></span><span></span>
         </div>
     </div>
+    <script>
+        (function() {
+            var el = document.getElementById('appSplash');
+            if (!el) return;
+            try {
+                if (sessionStorage.getItem('tezsot_splash_shown')) {
+                    el.style.display = 'none';
+                } else {
+                    sessionStorage.setItem('tezsot_splash_shown', '1');
+                    setTimeout(function() { el.style.display = 'none'; }, 600);
+                }
+            } catch(e) {}
+        })();
+    </script>
 
     <!-- ===== PWA INSTALL BANNER (Senior Clean) ===== -->
     <div class="pwa-banner" id="pwaBanner">
@@ -683,26 +697,26 @@
             <p>Ilova orqali tezroq va qulayroq foydalaning</p>
         </div>
 
-        <div class="pwa-modal-body">
+        <div class="pwa-modal-body" id="pwaModalBody">
             <div class="pwa-step">
                 <div class="pwa-step-icon step1"><i class="ri-menu-line"></i></div>
                 <div class="pwa-step-content">
-                    <strong>Brauzer menyusini oching</strong>
-                    <p>Chrome/brauzeringizning yuqori o'ng burchagidagi ⋮ (uch nuqta) tugmasini bosing</p>
+                    <strong id="step1Title">Brauzer menyusini oching</strong>
+                    <p id="step1Desc">Chrome brauzeringizning yuqori o'ng burchagidagi ⋮ (uch nuqta) tugmasini bosing</p>
                 </div>
             </div>
             <div class="pwa-step">
                 <div class="pwa-step-icon step2"><i class="ri-download-2-line"></i></div>
                 <div class="pwa-step-content">
-                    <strong>"Ilovani o'rnatish" ni tanlang</strong>
-                    <p>"Install App" yoki "Add to Home Screen" tugmasini bosing</p>
+                    <strong id="step2Title">"Ilovani o'rnatish" ni tanlang</strong>
+                    <p id="step2Desc">"Install App" yoki "Add to Home Screen" tugmasini bosing</p>
                 </div>
             </div>
             <div class="pwa-step">
                 <div class="pwa-step-icon step3"><i class="ri-check-line"></i></div>
                 <div class="pwa-step-content">
-                    <strong>"O'rnatish" tugmasini bosing</strong>
-                    <p>Ilova telefoningizga o'rnatiladi va ish stolida paydo bo'ladi</p>
+                    <strong id="step3Title">"O'rnatish" tugmasini bosing</strong>
+                    <p id="step3Desc">Ilova telefoningizga o'rnatiladi va ish stolida paydo bo'ladi</p>
                 </div>
             </div>
         </div>
@@ -1132,26 +1146,6 @@
                 subscribePush();
             }
 
-            // ===== Splash Screen =====
-            var splashEl = document.getElementById('appSplash');
-            if (splashEl) {
-                var splashShown = sessionStorage.getItem('tezsot_splash_shown');
-                if (!splashShown) {
-                    sessionStorage.setItem('tezsot_splash_shown', '1');
-                    function hideSplash() {
-                        splashEl.classList.add('hidden');
-                        setTimeout(function() { splashEl.style.display = 'none'; }, 600);
-                    }
-                    if (document.readyState === 'complete') {
-                        setTimeout(hideSplash, 500);
-                    } else {
-                        window.addEventListener('load', function() { setTimeout(hideSplash, 500); });
-                    }
-                } else {
-                    splashEl.style.display = 'none';
-                }
-            }
-
             // ===== PWA Install =====
             var isPwaInstalled = window.matchMedia('(display-mode: standalone)').matches ||
                                  window.navigator.standalone || false;
@@ -1171,6 +1165,30 @@
                 isPwaInstalled = true;
             });
 
+            function updatePwaSteps(isIOS) {
+                var s1 = document.getElementById('step1Title');
+                var d1 = document.getElementById('step1Desc');
+                var s2 = document.getElementById('step2Title');
+                var d2 = document.getElementById('step2Desc');
+                var s3 = document.getElementById('step3Title');
+                var d3 = document.getElementById('step3Desc');
+                if (isIOS) {
+                    s1.textContent = 'Safari'da Share tugmasini bosing';
+                    d1.textContent = 'Pastki qismdagi kvadrat ichida yuqoriga strelka (↑) ko\'rinishidagi Share tugmasini bosing';
+                    s2.textContent = '"Asosiy ekranga qo\'shish"ni tanlang';
+                    d2.textContent = 'Pastga siljiting va "Add to Home Screen" (Asosiy ekranga qo\'shish) tugmasini bosing';
+                    s3.textContent = '"Add" tugmasini bosing';
+                    d3.textContent = 'Yuqori o\'ng burchakdagi "Add" (Qo\'shish) tugmasini bosing. Ilova ekranda paydo bo\'ladi';
+                } else {
+                    s1.textContent = 'Brauzer menyusini oching';
+                    d1.textContent = 'Chrome brauzeringizning yuqori o\'ng burchagidagi ⋮ (uch nuqta) tugmasini bosing';
+                    s2.textContent = '"Ilovani o\'rnatish" ni tanlang';
+                    d2.textContent = '"Install App" yoki "Add to Home Screen" tugmasini bosing';
+                    s3.textContent = '"O\'rnatish" tugmasini bosing';
+                    d3.textContent = 'Ilova telefoningizga o\'rnatiladi va ish stolida paydo bo\'ladi';
+                }
+            }
+
             function installApp() {
                 if (deferredPrompt) {
                     deferredPrompt.prompt();
@@ -1182,6 +1200,8 @@
                         document.getElementById('pwaBanner').style.display = 'none';
                     });
                 } else {
+                    var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+                    updatePwaSteps(isIOS);
                     var modalBtn = document.querySelector('#pwaModal .pwa-modal-install-btn');
                     if (modalBtn) {
                         modalBtn.textContent = 'Tushundim';
@@ -1204,6 +1224,10 @@
                 document.getElementById('pwaModal').style.display = 'none';
                 document.body.style.overflow = '';
             }
+
+            window.installApp = installApp;
+            window.dismissPwaBanner = dismissPwaBanner;
+            window.closePwaModal = closePwaModal;
 
             // iOS safari / boshqa brauzerlar - qo'llanma ko'rsatish
             var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
